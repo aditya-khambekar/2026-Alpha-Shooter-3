@@ -1,5 +1,6 @@
 package frc.robot.subsystems.flywheel;
 
+import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import lombok.Getter;
@@ -20,6 +21,10 @@ public class Flywheel extends SubsystemBase {
 
     public void setVoltage(Voltage volts) {
         io.setMotorVoltage(volts);
+    }
+
+    public void setVelocitySetpoint(AngularVelocity velocity) {
+        io.setVelocitySetpoint(velocity);
     }
 
     @Override

@@ -12,6 +12,7 @@ import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Voltage;
+import frc.robot.utils.LoggedTunableNumber;
 
 public class FlywheelIODoubleSparkFlex implements FlywheelIO {
     private final SparkFlex leader;
@@ -23,6 +24,38 @@ public class FlywheelIODoubleSparkFlex implements FlywheelIO {
 
         leader.configure(Configs.leaderConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
         follower.configure(Configs.followerConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
+
+        LoggedTunableNumber kP = new LoggedTunableNumber("Flywheel kP");
+        kP.initDefault(leader.configAccessor.closedLoop.getP());
+        LoggedTunableNumber kI = new LoggedTunableNumber("Flywheel kI");
+        kI.initDefault(leader.configAccessor.closedLoop.getI());
+        LoggedTunableNumber kD = new LoggedTunableNumber("Flywheel kD");
+        kD.initDefault(leader.configAccessor.closedLoop.getD());
+
+        LoggedTunableNumber maxVelocity = new LoggedTunableNumber("Flywheel Cruise Velocity");
+        LoggedTunableNumber maxAcceleration = new LoggedTunableNumber("Flywheel Max Acceleration");
+
+        LoggedTunableNumber.ifChanged(
+                this.hashCode(),
+                pid -> {
+                    Configs.leaderConfig.closedLoop.pid(pid[0], pid[1], pid[2]);
+                    leader.configure(
+                            Configs.leaderConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
+                },
+                kP,
+                kI,
+                kD);
+
+        LoggedTunableNumber.ifChanged(
+                this.hashCode(),
+                va -> {
+                    Configs.leaderConfig.closedLoop.maxMotion.cruiseVelocity(va[0]);
+                    Configs.leaderConfig.closedLoop.maxMotion.maxAcceleration(va[1]);
+                    leader.configure(
+                            Configs.leaderConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
+                },
+                maxVelocity,
+                maxAcceleration);
     }
 
     @Override

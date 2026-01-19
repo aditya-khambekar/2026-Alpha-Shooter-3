@@ -8,16 +8,28 @@ import edu.wpi.first.units.measure.Voltage;
 import org.littletonrobotics.junction.AutoLog;
 
 public interface FlywheelIO {
-    @AutoLog
-    public static class FlywheelIOInputs {
-        public MutAngularVelocity motorVelocity;
-        public MutCurrent motorCurrent;
-        public MutTemperature motorTemperature;
-    }
+  @AutoLog
+  public static class FlywheelIOInputs {
+    public MutAngularVelocity motorVelocity;
+    public MutCurrent motorCurrent;
+    public MutTemperature motorTemperature;
+  }
 
-    public default void setMotorVoltage(Voltage volts) {}
+  public default void setMotorVoltage(Voltage volts) {}
 
-    public default void setVelocitySetpoint(AngularVelocity angularVelocity) {}
+  public default void setVelocitySetpoint(AngularVelocity angularVelocity) {}
 
-    public default void updateInputs(FlywheelIOInputs inputs) {}
+  public default void updateInputs(FlywheelIOInputs inputs) {}
+
+  public default double get() {
+    return 0.0;
+  }
+
+  public default double getVelocity() {
+    return 0.0;
+  }
+
+  public default double getPosition() {
+    return 0.0;
+  }
 }

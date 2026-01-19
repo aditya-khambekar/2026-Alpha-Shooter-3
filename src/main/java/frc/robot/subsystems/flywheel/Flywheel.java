@@ -9,7 +9,7 @@ public class Flywheel extends SubsystemBase {
     public Flywheel(FlywheelIO io){
         this.io = io;
         this.inputs = new FlywheelIOInputsAutoLogged();
-    }
+    } 
 
     @Override
     public void periodic() {

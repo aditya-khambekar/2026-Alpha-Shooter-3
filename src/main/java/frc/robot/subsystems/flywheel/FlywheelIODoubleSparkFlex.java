@@ -7,8 +7,8 @@ import static edu.wpi.first.units.Units.Rotations;
 
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
-import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Voltage;
@@ -32,7 +32,8 @@ public class FlywheelIODoubleSparkFlex implements FlywheelIO {
 
     @Override
     public void setVelocitySetpoint(AngularVelocity velocity) {
-        leader.getClosedLoopController().setSetpoint(velocity.in(Rotations.per(Minute)), ControlType.kMAXMotionVelocityControl);
+        leader.getClosedLoopController()
+                .setSetpoint(velocity.in(Rotations.per(Minute)), ControlType.kMAXMotionVelocityControl);
     }
 
     @Override

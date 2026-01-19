@@ -13,30 +13,25 @@ public class RobotContainer {
     public final CommandXboxController controller = new CommandXboxController(0);
 
     public RobotContainer() {
-        switch(Constants.currentMode){
+        switch (Constants.currentMode) {
             case REAL:
                 flywheel = new Flywheel(new FlywheelIODoubleSparkFlex(IDs.SHOOTER_LEADER, IDs.SHOOTER_FOLLLOWER));
                 break;
             case REPLAY:
-                flywheel = new Flywheel(new FlywheelIO() {
-                    
-                });
+                flywheel = new Flywheel(new FlywheelIO() {});
                 break;
             default:
-                flywheel = new Flywheel(new FlywheelIO() {
-                    
-                });
+                flywheel = new Flywheel(new FlywheelIO() {});
                 break;
-            
         }
 
         configureButtonBindings();
     }
 
     public void configureButtonBindings() {
-        controller.a().whileTrue(flywheel.getFactory().getRoutine().quasistatic(Direction.kForward));
-        controller.b().whileTrue(flywheel.getFactory().getRoutine().quasistatic(Direction.kReverse));
-        controller.x().whileTrue(flywheel.getFactory().getRoutine().dynamic(Direction.kForward));
-        controller.y().whileTrue(flywheel.getFactory().getRoutine().dynamic(Direction.kReverse));
+        controller.a().whileTrue(flywheel.getSysIDFactory().getRoutine().quasistatic(Direction.kForward));
+        controller.b().whileTrue(flywheel.getSysIDFactory().getRoutine().quasistatic(Direction.kReverse));
+        controller.x().whileTrue(flywheel.getSysIDFactory().getRoutine().dynamic(Direction.kForward));
+        controller.y().whileTrue(flywheel.getSysIDFactory().getRoutine().dynamic(Direction.kReverse));
     }
 }

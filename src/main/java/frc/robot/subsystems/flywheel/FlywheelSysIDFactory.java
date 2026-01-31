@@ -1,7 +1,7 @@
 package frc.robot.subsystems.flywheel;
 
-import static edu.wpi.first.units.Units.Minute;
 import static edu.wpi.first.units.Units.Rotations;
+import static edu.wpi.first.units.Units.RotationsPerSecond;
 import static edu.wpi.first.units.Units.Second;
 import static edu.wpi.first.units.Units.Seconds;
 import static edu.wpi.first.units.Units.Volts;
@@ -29,7 +29,7 @@ public class FlywheelSysIDFactory {
                 flywheel::setVoltage,
                 log -> {
                   log.motor("Shooter")
-                      .angularVelocity(Rotations.per(Minute).of(flywheel.getVelocity()))
+                      .angularVelocity(RotationsPerSecond.of(flywheel.getVelocity()))
                       .voltage(Volts.of(flywheel.getVolts()))
                       .angularPosition(Rotations.of(flywheel.getPosition()));
                 },

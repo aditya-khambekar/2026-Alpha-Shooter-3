@@ -1,8 +1,5 @@
 package frc.robot;
 
-import static edu.wpi.first.units.Units.Volts;
-
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants.IDs;
@@ -42,19 +39,11 @@ public class RobotContainer {
     controller.x().whileTrue(flywheel.getSysIDFactory().getRoutine().dynamic(Direction.kForward));
     controller.y().whileTrue(flywheel.getSysIDFactory().getRoutine().dynamic(Direction.kReverse));
 
-    controller
-        .leftBumper()
-        .whileTrue(
-            Commands.runEnd(
-                () -> {
-                  System.out.println("Command Set Voltage");
-                  flywheel.setVoltage(Volts.of(5));
-                },
-                () -> {
-                  flywheel.setVoltage(Volts.zero());
-                },
-                flywheel));
-
-    controller.rightBumper().whileTrue(flywheel.runVelocity());
+    // StateMachine2 flywheelStates = new
+    // StateMachine2(flywheel).restartOnTeleop().publishToNT("FlywheelStates");
+    // State2 RUNNING = flywheelStates.state("RUNNING").whileRunning(flywheel.runVelocity());
+    // State2 OFF =
+    // flywheelStates.defaultState("OFF").whileRunning(Commands.idle(flywheel)).onTrigger(controller.rightBumper(), () -> RUNNING);
+    // RUNNING.onTrigger(controller.rightBumper(), () -> OFF);
   }
 }

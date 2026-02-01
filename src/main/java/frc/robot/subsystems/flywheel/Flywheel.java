@@ -4,6 +4,10 @@ import static edu.wpi.first.units.Units.Minute;
 import static edu.wpi.first.units.Units.Rotations;
 import static edu.wpi.first.units.Units.Volts;
 
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.RobotController;
@@ -73,5 +77,30 @@ public class Flywheel extends SubsystemBase {
         () -> {
           setVoltage(Volts.zero());
         });
+  }
+
+  public Command runVelocityWPI() {
+    return new VelocityWPI();
+  }
+
+  public class VelocityWPI extends Command {
+    private final SimpleMotorFeedforward feedforward =
+        new SimpleMotorFeedforward(0.074548, 0.10976, 0.044959);
+    private final ProfiledPIDController controller =
+        new ProfiledPIDController(
+            0.43619, 0, 0, new Constraints(300, 600) // acceleration, jerk
+            );
+
+    @Override
+    public void execute() {
+      var goal = Flywheel.this.desiredMotorVelocity.get() / 60;
+      controller.setGoal(goal);
+      var desiredMotorVelocity = controller.getSetpoint().position;
+      var desiredMotorAcceleration = controller.getSetpoint().velocity;
+      Flywheel.this.setVoltage(
+          Volts.of(
+              feedforward.calculate(desiredMotorVelocity, desiredMotorAcceleration)
+                  + controller.calculate(Flywheel.this.getVelocity())));
+    }
   }
 }

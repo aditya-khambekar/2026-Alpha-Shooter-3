@@ -2,11 +2,12 @@ package frc.robot.subsystems.flywheel;
 
 import static edu.wpi.first.units.Units.Minute;
 import static edu.wpi.first.units.Units.Rotations;
-import static edu.wpi.first.units.Units.Second;
+import static edu.wpi.first.units.Units.RotationsPerSecond;
 import static edu.wpi.first.units.Units.Volts;
 
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
+import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -76,7 +77,7 @@ public class FlywheelIODoubleSparkFlex implements FlywheelIO {
     System.out.println("Set Velocity " + velocity.in(Rotations.per(Minute)));
     leader
         .getClosedLoopController()
-        .setSetpoint(velocity.in(Rotations.per(Second)), ControlType.kVelocity);
+        .setSetpoint(velocity.in(RotationsPerSecond), ControlType.kVelocity, ClosedLoopSlot.kSlot0);
   }
 
   @Override
@@ -86,7 +87,7 @@ public class FlywheelIODoubleSparkFlex implements FlywheelIO {
      * inputs.motorCurrent.mut_replace(leader.getOutputCurrent(), Amps);
      * inputs.motorTemperature.mut_replace(leader.getMotorTemperature(), Celsius);
      */
-    SmartDashboard.putNumber("Motor Velocity", getVelocity());
+    SmartDashboard.putNumber("Motor Velocity", getVelocity() * 60);
     SmartDashboard.putNumber("Motor Current", leader.getOutputCurrent());
   }
 

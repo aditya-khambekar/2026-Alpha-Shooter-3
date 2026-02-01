@@ -14,16 +14,15 @@ public class Configs {
     leaderConfig
         .idleMode(IdleMode.kCoast)
         .smartCurrentLimit(90, 90)
-        .apply(new EncoderConfig().velocityConversionFactor(1 / 60));
-    leaderConfig.closedLoop.feedForward.sva(0.13955, 0.11141, 0.036289);
+        .apply(new EncoderConfig().velocityConversionFactor(1 / 60.0));
+    leaderConfig.closedLoop.feedForward.sva(0.074548, 0.10976, 0.044959);
     leaderConfig
         .closedLoop
-        .p(9.982E-05)
+        .p(0.0090597)
+        .outputRange(-1, 1)
         .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
         .maxMotion
-        .cruiseVelocity(6000)
-        .maxAcceleration(3000)
-        .allowedProfileError(1);
+        .maxAcceleration(300);
 
     followerConfig
         .idleMode(IdleMode.kCoast)
